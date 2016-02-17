@@ -1,3 +1,4 @@
+import http from 'http';
 import express from 'express';
 import webpack from 'webpack';
 import path from 'path';
@@ -9,7 +10,10 @@ export function createServer(config, webpackConfig, callback) {
     const compiler = webpack(webpackConfig);
     const { port } = config;
 
+    const httpServer = http.createServer();
     const app = express();
+
+    httpServer.on('request', app);
 
     let devMiddleware;
 
@@ -25,7 +29,7 @@ export function createServer(config, webpackConfig, callback) {
 
     }
 
-    callback(app);
+    callback(app, httpServer);
 
     if (ENV === 'development') {
 
@@ -38,15 +42,10 @@ export function createServer(config, webpackConfig, callback) {
 
     }
 
-
-    app.listen(port, 'localhost', function(err) {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log('Listening at http://localhost:' + port);
+    httpServer.listen(port, function() {
+      console.log('Listening at http://localhost:' + port)
     });
 
-    return app;
+    return { app, httpServer };
 }
 
