@@ -1,0 +1,31 @@
+{
+  "parser": "babel-eslint",
+  "plugins": [
+  ],
+  "rules": {
+    "strict": 0,
+    "quotes": [1, "single"],
+    "no-underscore-dangle": 0,
+    "new-cap": 0
+  },
+  "settings": {
+    "ecmascript": 7
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true,
+    "destructuring": true,
+    "spread": true
+  },
+  "globals": {
+    "require": true,
+    "module": true,
+    "document": true,
+    "window": true,
+    "console": true
+  }
+}
