@@ -3,7 +3,7 @@ import express from 'express';
 import webpack from 'webpack';
 import path from 'path';
 
-const ENV = process.env.NODE_ENV.trim();
+const ENV = (process.env.NODE_ENV || 'development').trim();
 console.log('Run mode:', ENV);
 
 export function createServer(config, webpackConfig, callback) {
