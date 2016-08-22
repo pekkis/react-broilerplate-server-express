@@ -30,23 +30,30 @@ export function createServer(config, webpackConfig, callback) {
 
     }
 
-    callback(app, httpServer);
+    return new Promise((resolve, reject) => {
+      callback(app, httpServer).then(() => {
 
-    if (ENV === 'development') {
+        if (ENV === 'development') {
 
-        app.get('*', function(req, res) {
-            const index = devMiddleware.fileSystem.readFileSync(
-                path.join(webpackConfig.output.path, 'index.html')
-            );
-            res.end(index);
+            app.get('*', function(req, res) {
+                const index = devMiddleware.fileSystem.readFileSync(
+                    path.join(webpackConfig.output.path, 'index.html')
+                );
+                res.end(index);
+            });
+
+        }
+
+        httpServer.listen(port, function() {
+          console.log('Listening at http://localhost:' + port)
         });
 
-    }
+        resolve({
+          app,
+          httpServer,
+        });
 
-    httpServer.listen(port, function() {
-      console.log('Listening at http://localhost:' + port)
+      });
     });
 
-    return { app, httpServer };
 }
-
